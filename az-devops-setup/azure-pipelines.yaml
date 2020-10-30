@@ -1,0 +1,25 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+# this job requires 3 variables:
+# databricks_host - DB host
+# databricks_token - DB token
+# db_job_id - job ID
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-20.04'
+
+steps:
+- script: |
+    pip install databricks-cli
+    ~/.local/bin/databricks -h
+  displayName: 'Install Databricks CLI'
+
+- script: |
+    ~/.local/bin/databricks jobs run-now --job-id $DB_JOB_ID --notebook-params "{\"model_name\": \"${MODEL_NAME}\", \"version\": \"${VERSION}\", \"stage\": \"${STAGE}\", \"timestamp\": \"${TIMESTAMP}\", \"text\": \"${TEXT}\", \"webhook_id\": \"${WEBHOOK_ID}\"}"
+  displayName: 'Trigger JOB'

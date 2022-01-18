@@ -14,7 +14,7 @@ personal_access_token = ''
 organization_url = 'https://dev.azure.com/alexeyottdb/'
 project = 'MLFlowHooks'
 
-def maybe_trigger_action(req_body):
+def maybe_trigger_action(req_body: dict):
 
     to_stage = req_body.get("to_stage", "")
     from_stage = req_body.get("from_stage", "")
@@ -29,7 +29,7 @@ def maybe_trigger_action(req_body):
     credentials = BasicAuthentication('', personal_access_token)
     connection = Connection(base_url=organization_url, creds=credentials)
     pipeline_client=connection.clients_v6_0.get_pipelines_client()
-
+    
     pipeline_id = -1
 
     variables={

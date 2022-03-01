@@ -11,7 +11,9 @@ def create_error(msg):
     func.HttpResponse(msg, status_code=400)
 
 personal_access_token = ''
-organization_url = 'https://dev.azure.com/alexeyottdb/'
+organization_url = 'https://dev.azure.com/xxx/'
+to_prod_pipeline_id = -1
+to_staging_pipeline_id = 3
 project = 'MLFlowHooks'
 
 def maybe_trigger_action(req_body: dict):
@@ -46,14 +48,14 @@ def maybe_trigger_action(req_body: dict):
     if to_stage == "Staging" and not from_stage == "Production":
         logging.info("Going to trigger integration pipeline")
 
-        pipeline_id = 3
+        pipeline_id = to_staging_pipeline_id
         
         action = f"Integration test is triggered."
 
     if to_stage == "Production":
         logging.info("Going to trigger release pipeline")
         # 
-        #pipeline_id = 3 
+        pipeline_id = to_prod_pipeline_id
 
         action = "Deployment to Azure ML triggered."
 
